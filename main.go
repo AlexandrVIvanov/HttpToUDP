@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	fmt "fmt"
+	"io"
 	"log"
 	"net/http"
 )
@@ -15,11 +15,23 @@ func main() {
 
 func echoPayload(w http.ResponseWriter, req *http.Request) {
 	log.Printf("Request connection: %s, path: %s", req.Proto, req.URL.Path[1:])
-	defer req.Body.Close()
-	contents, err := ioutil.ReadAll(req.Body)
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Fatalf(
+				"Oops! Failed close connection.\n %s",
+				err,
+			)
+		}
+	}(req.Body)
+
+	var contents, err = io.ReadAll(req.Body)
 	if err != nil {
-		log.Fatalf("Oops! Failed reading body of the request.\n %s", err)
 		http.Error(w, err.Error(), 500)
+		log.Fatalf("Oops! Failed reading body of the request.\n %s", err)
 	}
-	fmt.Fprintf(w, "%s\n", string(contents))
+	_, err = fmt.Fprintf(w, "%s\n", string(contents))
+	if err != nil {
+		return
+	}
 }
