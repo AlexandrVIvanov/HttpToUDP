@@ -50,7 +50,7 @@ func echoPayload(w http.ResponseWriter, req *http.Request) {
 
 	//	fmt.Fprintf(w, "%s\n", string(contents))
 	//	fmt.Fprintf(w, "%s\n", string(qip))
-	//	fmt.Fprintf(w, "%s\n", string(qtext))
+		fmt.Fprintf(w, "%s\n", string(qtext))
 
 }
 
