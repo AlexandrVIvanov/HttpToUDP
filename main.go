@@ -28,7 +28,7 @@ func echoPayload(w http.ResponseWriter, req *http.Request) {
 
 	q := req.URL.Query()
 
-	_, err2 := fmt.Fprintln(w, "Helo Andru")
+	_, err2 := fmt.Fprintln(w, "color 2")
 	if err2 != nil {
 		return
 	}
