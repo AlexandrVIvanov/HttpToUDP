@@ -44,7 +44,9 @@ func echoPayload(w http.ResponseWriter, req *http.Request) {
 		log.Printf("Send qtext: %s", string(qtexthex))
 		return
 	}
+	log.Printf("Send: %s, path: %s", string(qiphex), string(qtexthex))
 	log.Printf("Send: %s, path: %s", string(qtext), string(qip))
+
 
 	go sendToUDP(qip, qtext)
 
